@@ -1,21 +1,87 @@
 
-//Start and restart the Game
-displayCards();
+//Creates cards and stars html and adds to document
+createHtml();
+
+//Starts and restarts the Game
+const startButton = document.querySelector('.play');
+startButton.addEventListener('click', startGame, {once: true});
+
 restartGame();
 
+//Global variable declaration to stop the timer
+var intervalID;
+
 //Function to be called to display cards
-function displayCards(){
-	let moveCounter = -1;
-	moveCounter = displayMovesCount(moveCounter);
+function startGame(){
+	//Timer starts once html is ready and game starts
+	updateTimer();
 	const deck = document.querySelector('.deck');
 	const cardsList = deck.querySelectorAll('.card'); //list that holds all the cards
-	const cardsArray = Array.from(cardsList); 	// List to array conversion
+	const cardsArray = Array.from(cardsList);     // List to array conversion
 	const shuffledArray = shuffle(cardsArray); // Shuffled cards using shuffle method
 
+	let moveCounter = -1;
+	moveCounter = displayMovesCount(moveCounter);
 	resetDeckwithShuffledCards(deck,shuffledArray); //Updating existing deck with shuffled cards
 
 	//Handling click on each card
 	respondToClick(deck,shuffledArray);
+}
+
+//Function that creates all cards and stars html dynamically and return the same
+function createHtml(){	
+	//Creates stars html part on web page
+	const starsTag = document.querySelector('.stars');
+	for(let i = 1; i <= 3; i++){
+		const liTag = document.createElement('li');
+		const iTag = document.createElement('i');
+		iTag.className = 'fa fa-star';
+		liTag.appendChild(iTag);
+		starsTag.appendChild(liTag);
+	}
+
+	//Creates cards html on the web page
+	const ulTag = document.querySelector('.deck');
+	//Array holding cards classnames
+	const cardClassNamesArray = ['fa fa-diamond','fa fa-diamond','fa fa-paper-plane-o', 'fa fa-paper-plane-o',
+		'fa fa-anchor', 'fa fa-anchor','fa fa-bolt','fa fa-bolt', 
+		'fa fa-cube','fa fa-cube', 'fa fa-leaf','fa fa-leaf', 
+		'fa fa-bicycle','fa fa-bicycle', 'fa fa-bomb', 'fa fa-bomb'];
+	//Loop to create, set classname accordingly and append html fragments to deck
+	for(let i = 0; i < cardClassNamesArray.length; i++){
+		const liTag = document.createElement('li');
+		liTag.className = 'card';	
+		const iTag = document.createElement('i');
+		iTag.className = cardClassNamesArray[i];
+		liTag.appendChild(iTag);
+		ulTag.appendChild(liTag);
+	}
+}
+
+/*
+ * This function updates time in seconds and minutes after the interval set 
+ * i.e. every second seconds gets updated and after 60 secs minute gets updated
+ */
+function updateTimer(){
+	let minutes = 0;
+	let seconds = 0;
+	intervalID  = setInterval(function(){
+		seconds += 1;
+		if (seconds === 60){
+			seconds = 0;
+			minutes += 1;
+		}
+		displayTimer(minutes,seconds);
+	}, 1000);
+	return intervalID ;
+}
+
+//Stops the timer and returns timer reading
+function stopTheTimer(intervalID ){
+	clearInterval(intervalID );
+	const timerSlot = document.querySelector('.score-panel .timer');
+	const totalTimerReading = timerSlot.innerText;	
+	return totalTimerReading;				
 }
 
 //Shuffle function from http://stackoverflow.com/a/2450976
@@ -28,7 +94,6 @@ function shuffle(array) {
 		array[currentIndex] = array[randomIndex];
 		array[randomIndex] = temporaryValue;
 	}
-
 	return array;
 }
 
@@ -48,11 +113,11 @@ function respondToClick(deck,shuffledArray){
 	for(const card of shuffledArray){
 		card.addEventListener('click', function (event){
 			clickCounter++;			
-			if(clickCounter === 1)
-			{startTime = performance.now();		
+			if(clickCounter === 1) {
+				startTime = performance.now();		
 			}
 			if (card.className === "card"){
-				//checks and returns if any other card already open		
+				//checks and returns if any other card is already open		
 				const openCard = deck.querySelector('.card.open.show');
 				//open and shows the card onclick		
 				card.className = "card open show";
@@ -60,13 +125,15 @@ function respondToClick(deck,shuffledArray){
 				if(openCard !== null){
 					//calculateMoves(openCard,card,moveCounter);
 					moveCounter = displayMovesCount(moveCounter);
+					updateStarRating(moveCounter);
 					checkIfMatching(openCard,card);
 					const matchedCardsList = deck.querySelectorAll('.card.match');
 					if(matchedCardsList !== null && 
-							matchedCardsList.length === shuffledArray.length){
+							matchedCardsList.length === shuffledArray.length){				
 						setTimeout(function(){
-							displayResultMessage(moveCounter,startTime);
-						}, 1000);
+							const timerString = stopTheTimer(intervalID );
+							displayResultMessage(moveCounter,startTime, timerString);
+						}, 100);
 					}
 				} 
 			}
@@ -98,30 +165,29 @@ function setUnmatched(openCard,card) {
 	}, 700);
 }
 
-//Displays result with Game score
-function displayResultMessage(moveCounter,startTime){
-	const score = calculateFinalScore(moveCounter,startTime);
-	displayScore(score);
-	updateStarRating(score);
-	if(moveCounter <= 12){
-		window.alert(`Congratulations! You have won the Game with score ${score}.You have very sharp memory!`);
-	}else{
-		if(moveCounter > 12 && moveCounter < 16){
-			window.alert(`Congratulations! You have won the Game with score ${score}.You have a good memory!`);
-		}else
-			window.alert(`Congratulations! You have won the Game with score ${score}.`);
-	}	
-}
 
-//Calculating time taken to complete the game and total number of moves
-function calculateFinalScore(moveCounter,startTime){
+function calculateTotalTimeTaken(startTime){
 	var endTime = 0;
 	var timeTaken = 0;
 	endTime = performance.now();						 
 	timeTaken = Math.round((endTime - startTime) / 1000);
-	displayTime(timeTaken);
-	return precisionRound(500000 / (timeTaken * (moveCounter-8)),-2);
-	// return bonus;
+	return timeTaken;
+}
+//Calculating time taken to complete the game and total number of moves
+function calculateFinalScore(moveCounter,startTime){
+	const totalTime = calculateTotalTimeTaken(startTime);
+	const finalScore =  precisionRound(500000 / (totalTime * (moveCounter-8)),-2);
+	return finalScore;
+}
+
+//Displays result with Game score
+function displayResultMessage(moveCounter, startTime, timerString){
+	const score = calculateFinalScore(moveCounter, startTime);
+	displayScore(score);
+	const stars = document.querySelectorAll('.score-panel .stars>li');
+	window.alert(`Congratulations! You have won the Game in ${timerString} time with score ${score} and ${stars.length} stars`);
+	window.alert(`Do you want to play again? Click restart...`);
+	//window.location.reload(true);
 }
 
 //Calculates and displays moves count on web page and returns moveCounter 
@@ -135,46 +201,43 @@ function displayMovesCount(moveCounter){
 function displayScore(finalScore){
 	const scoreDisplay = document.querySelector('.score-panel .score');
 	scoreDisplay.innerText = finalScore;
-	return scoreDisplay;
+	return finalScore;
 }
 
-//Displays time taken on page
-function displayTime(timeTaken){
-	//console.log(timeTaken);
-	const timeDisplay = document.querySelector('.score-panel .time');
-	timeDisplay.innerText = timeTaken;
-	return timeTaken;
+//Function to display timer in min:sec format
+function displayTimer(minutes,seconds){
+	const timerSlot = document.querySelector('.score-panel .timer');
+	var min = '00';
+	var sec = '00';
+	if (seconds < 10)
+		sec = '0' + seconds;
+	else
+		sec = seconds;
+	if (minutes < 10)
+		min = '0' + minutes;
+	else
+		min = minutes;
+
+	timerSlot.innerText = min + ':' + sec;
 }
 
-function updateStarRating(score){
+//Updates star rating while playing the game
+function updateStarRating(moveCounter){
 	//To remove element for decreasing star 
 	const starRatingUl = document.querySelector('.score-panel .stars');
 	const starRatingLi = document.querySelectorAll('.score-panel .stars>li');
-	//Adding element to increase stars
-	var starRating = document.querySelector('.score-panel .stars>li');
-	var starITag = document.createElement('i');
-	starITag.className = 'fa fa-star';
 
-	//Adding or removing stars and displaying on page
-	const docFragment = document.createDocumentFragment();
-	if(score >= 4000){
-		docFragment.appendChild(starITag);
-		starRating = document.querySelector('.score-panel .stars>li');
-		starITag = document.createElement('i');
-		starITag.className = 'fa fa-star';
-		docFragment.appendChild(starITag);
-		starRating.appendChild(docFragment);
-	}else if(score >= 3000){
-		docFragment.appendChild(starITag);
-		starRating.appendChild(docFragment);
-	}else if(score >= 1000){
+	//Removing stars and displaying on page on condition
+	if(moveCounter === 15){
 		starRatingUl.removeChild(starRatingLi[0]);
-	}else{
+	}else if(moveCounter === 20){
 		starRatingUl.removeChild(starRatingLi[0]);
-		starRatingUl.removeChild(starRatingLi[1]);
-	}		
+	}else if(moveCounter === 25){
+		starRatingUl.removeChild(starRatingLi[0]);
+	}	
 }
 
+//Rounds upto given power and returns number
 function precisionRound(number, precision) {
 	var factor = Math.pow(10, precision);
 	return Math.round(number * factor) / factor;
