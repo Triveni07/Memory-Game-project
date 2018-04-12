@@ -4,6 +4,7 @@ createHtml();
 
 //Starts and restarts the Game
 const startButton = document.querySelector('.play');
+//Event added on click which is invoked only once to stop multiple method invocation
 startButton.addEventListener('click', startGame, {once: true});
 
 restartGame();
@@ -15,6 +16,10 @@ var intervalID;
 function startGame(){
 	//Timer starts once html is ready and game starts
 	updateTimer();
+	
+	//Disabling button on game start i.e. game can be started only once
+	startButton.setAttribute("disabled", "");
+
 	const deck = document.querySelector('.deck');
 	const cardsList = deck.querySelectorAll('.card'); //list that holds all the cards
 	const cardsArray = Array.from(cardsList);     // List to array conversion
