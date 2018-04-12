@@ -84,7 +84,7 @@ function updateTimer(){
 function stopTheTimer(intervalID ){
 	clearInterval(intervalID );
 	const timerSlot = document.querySelector('.score-panel .timer');
-	const totalTimerReading = timerSlot.innerText;	
+	const totalTimerReading = timerSlot.textContent;	
 	return totalTimerReading;				
 }
 
@@ -197,14 +197,16 @@ function displayResultMessage(moveCounter, startTime, timerString){
 //Calculates and displays moves count on web page and returns moveCounter 
 function displayMovesCount(moveCounter){
 	const movesCount = document.querySelector('.score-panel .moves');
-	movesCount.innerText = ++moveCounter;
+	movesCount.textContent = ++moveCounter;
+	movesCount.style.color = '#0c0c33';
 	return moveCounter;
 }
 
 //Displays final score on page
 function displayScore(finalScore){
 	const scoreDisplay = document.querySelector('.score-panel .score');
-	scoreDisplay.innerText = finalScore;
+	scoreDisplay.textContent = finalScore;
+	scoreDisplay.style.color = '#0c0c33';
 	return finalScore;
 }
 
@@ -221,8 +223,7 @@ function displayTimer(minutes,seconds){
 		min = '0' + minutes;
 	else
 		min = minutes;
-
-	timerSlot.innerText = min + ':' + sec;
+	timerSlot.textContent = min + ':' + sec;
 }
 
 //Updates star rating while playing the game

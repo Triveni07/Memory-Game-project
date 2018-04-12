@@ -8,6 +8,8 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 <link rel="stylesheet prefetch"
 	href="https://fonts.googleapis.com/css?family=Coda">
+<link href="https://fonts.googleapis.com/css?family=Orbitron"
+	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -18,17 +20,20 @@
 		</header>
 
 		<section class="score-panel">
-			<button type="button" class="play button">Play</button><br>
-			<ul class="stars">
-			</ul>
-
-			<span class="moves">0</span> Moves 
-			<!-- <span class="time">00</span> Time in sec -->
-			<span class="timer">00:00</span> Timer
-			<span class="score">0</span> Score
+			<div>
+				<ul class="stars">
+				</ul>
+				Moves: <span class="moves">0</span>
+				Score: <span class="score">0</span>
+			</div>
+			<button type="button" class="play button">Play</button>
 
 			<div class="restart">
 				<i class="fa fa-repeat"></i>
+			</div>
+
+			<div>
+				<span class="timer">00:00</span>
 			</div>
 		</section>
 

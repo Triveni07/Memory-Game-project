@@ -32,6 +32,7 @@ Or direct location of index.html inside your pc's directory and open the path in
 _Include below dependencies inside head element of index html:_
 * [Bootstrap library](https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css) used for css styling. 
 * [Google fonts](https://fonts.googleapis.com/css?family=Coda) used to style the fonts of score panel.
+* [Google fonts](https://fonts.googleapis.com/css?family=Orbitron) used to style the digital fonts of timer
 
 ### Usage: 
 On successful web page loading, start the game by clicking start the Game button.
