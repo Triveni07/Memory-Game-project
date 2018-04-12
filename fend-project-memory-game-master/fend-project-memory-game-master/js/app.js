@@ -16,7 +16,6 @@ var intervalID;
 function startGame(){
 	//Timer starts once html is ready and game starts
 	updateTimer();
-
 	//Disabling button on game start i.e. game can be started only once
 	startButton.setAttribute("disabled", "");
 	startButton.style.background = "#5ea8b2"; //Changing color of button when disabled
@@ -235,9 +234,10 @@ function updateStarRating(moveCounter){
 	//Removing stars and displaying on page on condition
 	if(moveCounter === 14){
 		starRatingUl.removeChild(starRatingLi[0]);
-		starRatingUl.style.color = '#d11b1e';//Indication of low performance by changing stars color
+		starRatingUl.style.color = '#ffbf00 ';//Indication of low performance by changing stars color to yellow
 	}else if(moveCounter === 20){
 		starRatingUl.removeChild(starRatingLi[0]);
+		starRatingUl.style.color = '#d11b1e';//Indication of low performance by changing stars color to red
 	}
 }
 
