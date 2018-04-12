@@ -19,7 +19,7 @@ function startGame(){
 	
 	//Disabling button on game start i.e. game can be started only once
 	startButton.setAttribute("disabled", "");
-
+	startButton.style.background = "#5ea8b2"; //Changing color of button when disabled
 	const deck = document.querySelector('.deck');
 	const cardsList = deck.querySelectorAll('.card'); //list that holds all the cards
 	const cardsArray = Array.from(cardsList);     // List to array conversion

@@ -3,7 +3,9 @@
 ### Description:
 * This project is a single page web application to play a matching game of cards.
 * Once loaded the html content of cards is added to the web page in hidden way.
-* User can start the game by clicking on a start the game button.
+* User can start the game by clicking play button.
+* Only one event is added on click to make sure user can start only one session of game at a time.
+* Button is disabled once the game starts, to understand visual effect of button disabled.
 * Once button is clicked, timer starts and user can click on the different cards and start playing memory game.
 * User can notice number of moves, and depending on that the stars will be updated.
 * When user completes matching of all cards, page displays a modular pop up with calculated score, 
