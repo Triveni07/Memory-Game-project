@@ -232,9 +232,7 @@ function updateStarRating(moveCounter){
 		starRatingUl.removeChild(starRatingLi[0]);
 	}else if(moveCounter === 20){
 		starRatingUl.removeChild(starRatingLi[0]);
-	}else if(moveCounter === 25){
-		starRatingUl.removeChild(starRatingLi[0]);
-	}	
+	}
 }
 
 //Rounds upto given power and returns number

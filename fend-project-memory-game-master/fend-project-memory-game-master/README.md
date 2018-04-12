@@ -26,6 +26,11 @@ _Total time is calculated using ```performance.now()```_
 To install this Game, click on index.html of the source folder.
 Or direct location of index.html inside your pc's directory and open the path in the browser.
 
+### Dependencies:
+_Include below dependencies inside head element of index html:_
+* [Bootstrap library](https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css) used for css styling. 
+* [Google fonts](https://fonts.googleapis.com/css?family=Coda) used to style the fonts of score panel.
+
 ### Usage: 
 On successful web page loading, start the game by clicking start the Game button.
 Then Timer will start and cards will be enabled for click and to check matching subsequently.
