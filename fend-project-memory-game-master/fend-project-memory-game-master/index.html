@@ -11,35 +11,73 @@
 <link href="https://fonts.googleapis.com/css?family=Orbitron"
 	rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="css/app.css">
+
 </head>
 <body>
 
 	<div class="container">
+		<!--Heading of Game  -->
 		<header>
 			<h1>Matching Game</h1>
 		</header>
 
+		<!--Score panel for game updates  -->
 		<section class="score-panel">
-			<div>
+			<div class="performance">
 				<ul class="stars">
+					<li><i class="fa fa-star"></i></li>
+					<li><i class="fa fa-star"></i></li>
+					<li><i class="fa fa-star"></i></li>
 				</ul>
-				Moves: <span class="moves">0</span>
-				Score: <span class="score">0</span>
+			</div>
+			<div>
+				Moves: <span class="moves">0</span> Score: <span class="score">0</span>
 			</div>
 			<button type="button" class="play button">Play</button>
 
+			<!-- Restart game -->
 			<div class="restart">
 				<i class="fa fa-repeat"></i>
 			</div>
 
+			<!--Game timer  -->
 			<div>
 				<span class="timer">00:00</span>
 			</div>
 		</section>
 
+		<!-- Deck of cards -->
 		<ul class="deck">
 		</ul>
+
+		<!-- Winner panel with result modal message -->
+		<section class="winner_panel">
+			<div class="modal_content">
+				<h2>Congratulations!</h2>
+				<p class="result_message"></p>
+				<br>
+				<div class="result">
+					<ul class="stars">
+					</ul>
+					<br>
+					<br> <span class="totalMoves"></span><br>
+					<br> <span class="totalTime"></span><br>
+					<br> <span class="finalScore"></span><br>
+					<br>
+				</div>
+				<span><button type="button" class="play_again">Restart</button></span>
+				<span><button type="button" class="close">Close</button></span>
+			</div>
+		</section>
 	</div>
+
+	<!-- Footer for copyright information -->
+	<footer class="footer">
+		<p class="copyright">
+			© [2018] by <a class="link"
+				href="https://www.linkedin.com/in/trivenilondhe/">[Triveni07@Udacity-Google]</a>
+		</p>
+	</footer>
 	<script src="js/app.js"></script>
 </body>
 </html>

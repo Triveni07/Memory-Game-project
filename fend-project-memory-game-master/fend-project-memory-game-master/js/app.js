@@ -14,9 +14,9 @@ var intervalID;
 
 //Function to be called to display cards
 function startGame(){
-	//Timer starts once html is ready and game starts
+//	Timer starts once html is ready and game starts
 	updateTimer();
-	//Disabling button on game start i.e. game can be started only once
+//	Disabling button on game start i.e. game can be started only once
 	startButton.setAttribute("disabled", "");
 	startButton.style.background = "#5ea8b2"; //Changing color of button when disabled
 	const deck = document.querySelector('.deck');
@@ -28,30 +28,20 @@ function startGame(){
 	moveCounter = displayMovesCount(moveCounter);
 	resetDeckwithShuffledCards(deck,shuffledArray); //Updating existing deck with shuffled cards
 
-	//Handling click on each card
+//	Handling click on each card
 	respondToClick(deck,shuffledArray);
 }
 
 //Function that creates all cards and stars html dynamically and return the same
 function createHtml(){	
-	//Creates stars html part on web page
-	const starsTag = document.querySelector('.stars');
-	for(let i = 1; i <= 3; i++){
-		const liTag = document.createElement('li');
-		const iTag = document.createElement('i');
-		iTag.className = 'fa fa-star';
-		liTag.appendChild(iTag);
-		starsTag.appendChild(liTag);
-	}
-
-	//Creates cards html on the web page
+//	Creates cards html on the web page
 	const ulTag = document.querySelector('.deck');
-	//Array holding cards classnames
+//	Array holding cards classnames
 	const cardClassNamesArray = ['fa fa-diamond','fa fa-diamond','fa fa-paper-plane-o', 'fa fa-paper-plane-o',
 		'fa fa-anchor', 'fa fa-anchor','fa fa-bolt','fa fa-bolt', 
 		'fa fa-cube','fa fa-cube', 'fa fa-leaf','fa fa-leaf', 
 		'fa fa-bicycle','fa fa-bicycle', 'fa fa-bomb', 'fa fa-bomb'];
-	//Loop to create, set classname accordingly and append html fragments to deck
+//	Loop to create, set classname accordingly and append html fragments to deck
 	for(let i = 0; i < cardClassNamesArray.length; i++){
 		const liTag = document.createElement('li');
 		liTag.className = 'card';	
@@ -121,13 +111,13 @@ function respondToClick(deck,shuffledArray){
 				startTime = performance.now();		
 			}
 			if (card.className === "card"){
-				//checks and returns if any other card is already open		
+//				checks and returns if any other card is already open		
 				const openCard = deck.querySelector('.card.open.show');
-				//open and shows the card onclick		
+//				open and shows the card onclick		
 				card.className = "card open show";
-				//If any other card is already open then check for matching and set the status		
+//				If any other card is already open then check for matching and set the status		
 				if(openCard !== null){
-					//calculateMoves(openCard,card,moveCounter);
+//					calculateMoves(openCard,card,moveCounter);
 					moveCounter = displayMovesCount(moveCounter);
 					updateStarRating(moveCounter);
 					checkIfMatching(openCard,card);
@@ -146,10 +136,10 @@ function respondToClick(deck,shuffledArray){
 }
 
 function checkIfMatching(openCard,card) {
-	//If matches found set the status to match
+//	If matches found set the status to match
 	if(openCard.firstElementChild.className === card.firstElementChild.className) {
 		setMatched(openCard,card);
-		//Not matched show unmatched and close the card after some time
+//		Not matched show unmatched and close the card after some time
 	} else {
 		setUnmatched(openCard,card);
 	}
@@ -184,14 +174,29 @@ function calculateFinalScore(moveCounter,startTime){
 	return finalScore;
 }
 
+
 //Displays result with Game score
 function displayResultMessage(moveCounter, startTime, timerString){
+	const stars = document.querySelectorAll('.score-panel .stars');
 	const score = calculateFinalScore(moveCounter, startTime);
-	displayScore(score);
-	const stars = document.querySelectorAll('.score-panel .stars>li');
-	window.alert(`Congratulations! You have won the Game in ${timerString} time with score ${score} and ${stars.length} stars`);
-	window.alert(`Do you want to play again? Click restart...`);
-	//window.location.reload(true);
+	displayScore(score); // score display on web page's score panel
+//	result message
+	const result_message = document.querySelector('.modal_content .result_message');
+	result_message.textContent = `Well done! You have matched all cards!`;
+
+//	Updating result message content to display
+	document.querySelector('.result .stars').innerHTML = document.querySelector('.performance .stars').innerHTML;
+	document.querySelector('.result .totalMoves').textContent = `Total Moves - ${moveCounter}`;
+	document.querySelector('.result .totalTime').textContent = `Time Taken - ${timerString}`;
+	document.querySelector('.result .finalScore').textContent = `Final Score  - ${score}`;
+
+//	Close button to close the modal
+	document.querySelector(".winner_panel .modal_content .close").addEventListener('click', function(){
+		document.querySelector(".winner_panel").classList.remove("active");
+	});
+
+	const winner_pannel = document.querySelector('.winner_panel');
+	winner_pannel.className ='winner_panel active';
 }
 
 //Calculates and displays moves count on web page and returns moveCounter 
@@ -228,18 +233,35 @@ function displayTimer(minutes,seconds){
 
 //Updates star rating while playing the game
 function updateStarRating(moveCounter){
-	//To remove element for decreasing star 
 	const starRatingUl = document.querySelector('.score-panel .stars');
 	const starRatingLi = document.querySelectorAll('.score-panel .stars>li');
 
-	//Removing stars and displaying on page on condition
+//	Removing stars and displaying on page on condition
 	if(moveCounter === 14){
-		starRatingUl.removeChild(starRatingLi[0]);
-		starRatingUl.style.color = '#ffbf00 ';//Indication of low performance by changing stars color to yellow
+//		starRatingUl.removeChild(starRatingLi[0]);
+//		starRatingUl.style.color = '#ffbf00 ';
+		updateStarColor(starRatingLi, 2);//Indication of low performance by changing stars color to yellow
 	}else if(moveCounter === 20){
-		starRatingUl.removeChild(starRatingLi[0]);
-		starRatingUl.style.color = '#d11b1e';//Indication of low performance by changing stars color to red
+//		starRatingUl.removeChild(starRatingLi[0]);
+		updateStarColor(starRatingLi, 1);//Indication of low performance by changing stars color to red
 	}
+}
+
+function updateStarColor(starRatingLi,indexOfStars){
+//	To remove element for decreasing star 
+	switch(indexOfStars){
+	case 2:
+		starRatingLi[0].style.color = '#fbca39';
+		starRatingLi[1].style.color = '#fbca39';
+		starRatingLi[2].style.color = '#BEBEBE	';
+		break;
+	case 1:
+		starRatingLi[0].style.color = '#d11b1e';
+		starRatingLi[1].style.color = '#BEBEBE	';
+		break;
+	default:
+		break;		
+	}		
 }
 
 //Rounds upto given power and returns number
@@ -250,11 +272,14 @@ function precisionRound(number, precision) {
 
 //Restarts the Game
 function restartGame(){
-	const restart = document.querySelector('.score-panel .restart');
-	const repeat = restart.querySelector('.fa');
-	repeat.addEventListener('click', function(){
-		// Reload the current page, without using the cache
-		window.alert(`Do you want to restart the Game?`);
+//	Game restart with restart button click
+	document.querySelector('.score-panel .restart .fa').addEventListener('click', function(){
+//		Reload the current page, without using the cache
+		window.location.reload(true);
+	});
+//	Game restart with play agian button in modal box	
+	document.querySelector(".winner_panel .modal_content .play_again").addEventListener('click', function(){
+		document.querySelector(".winner_panel").classList.remove("active");// disappears modal box
 		window.location.reload(true);
 	});
 }

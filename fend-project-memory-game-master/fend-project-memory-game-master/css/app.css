@@ -66,6 +66,12 @@ h1 {
 	justify-content: center;
 	align-items: center;
 	box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+	transition: all .5s linear;
+    -o-transition: all .5s linear;
+    transition: all .4s linear;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+	
 }
 
 .deck .card.open {
@@ -88,6 +94,10 @@ h1 {
 	cursor: default;
 	background: #d32869;
 	font-size: 33px;
+	-webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+    opacity: 1;
+	
 }
 /*
  * Styles for the Score Panel
@@ -133,7 +143,6 @@ h1 {
 
 .score-panel .restart {
 	float: right;
-	margin-top: 5px;
 	margin-left: 50px;
 	cursor: pointer;
 	color: #0a56d1;
@@ -144,14 +153,17 @@ h1 {
 	background: #6bcfe5;
 }
 
-.score-panel .stars {
+.score-panel .stars,
+.result .stars {
 	display: inline-block;
-	margin: 10px 50px 10px 0;
 	color: #0a820a;
 	font-size: 20px;
+    justify-content: space-around;
+    margin: 0;
+    padding-right: 40px;	
 }
 
-.score-panel .stars li {
+.score-panel .stars li, .result .stars li{
 	list-style: none;
 	display: inline-block;
 }
@@ -161,4 +173,94 @@ h1 {
 	font-size: 20px;
 	font-family: 'Orbitron', sans-serif;
 	font-family: 'Orbitron', sans-serif
+	    display: flex;
+    flex-grow: 1;
+    justify-content: center;
 }
+
+/*Winners panel styling  */
+.winner_panel {
+    color: #02ccba;
+    background-color: #420b3b;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    padding: 2em;
+    left: 50%;
+    top: -100%;
+    text-align: center;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    transition: 0.7s all ease-out;
+    opacity: 0.8;
+}
+
+.winner_panel.active {
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    top: 50%;
+    z-index: 90;
+}
+
+.winner-message .modal_content {
+    position: relative;
+    z-index: 90;
+}
+
+.winner_panel h2 {
+    font-size: 1.5rem;
+    color: #02ccba;
+    text-align: center;
+}
+
+.winner_panel p {
+    color: #02ccba;
+    text-align: center;
+}
+
+.winner_panel .starRating {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.winner_panel .starRating li {
+    list-style: none;
+    margin: 0 5px 0 0;
+}
+
+.play_again, .close {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #0bba97;
+    border: 1px solid #118cdd;
+    margin-top: 1rem;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.play_again:hover, .close:hover {
+    background-color: #02b3e4;
+    border-color: #100ad1;
+}
+
+/*Copyright information styling  */
+.copyright,
+.link {
+    text-align: center;
+	color: #100ad1;
+}
+
